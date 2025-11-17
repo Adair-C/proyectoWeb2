@@ -1,0 +1,299 @@
+:root {
+  --dash-bg: #F3F0FF;
+  --dash-sidebar: #111827;
+  --dash-primary: #7C3AED;
+  --dash-primary-soft: #EDE9FE;
+  --dash-accent: #10B981;
+  --dash-card-bg: #FFFFFF;
+  --dash-border: #E5E7EB;
+  --dash-text: #111827;
+  --dash-muted: #6B7280;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--dash-bg);
+  color: var(--dash-text);
+}
+
+/* Layout general */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.dashboard-sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #111827, #020617);
+  color: #F9FAFB;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.sidebar-logo span {
+  color: var(--dash-primary);
+}
+
+.sidebar-user {
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-user strong {
+  display: block;
+}
+
+.sidebar-section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #9CA3AF;
+  margin-bottom: 0.4rem;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.sidebar-menu li a {
+  display: block;
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #E5E7EB;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
+  background: rgba(124, 58, 237, 0.2);
+  color: #F9FAFB;
+}
+
+/* Botón logout en sidebar */
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.sidebar-logout {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 999px;
+  border: none;
+  background: #16A34A;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.35);
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.sidebar-logout:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+/* Contenido principal */
+.dashboard-main {
+  flex: 1;
+  padding: 1.5rem 2rem;
+}
+
+/* Header superior */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.dashboard-header-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.dashboard-header-subtitle {
+  font-size: 0.9rem;
+  color: var(--dash-muted);
+}
+
+.dashboard-clock {
+  font-family: "Consolas", monospace;
+  font-size: 1.2rem;
+  color: var(--dash-primary);
+}
+
+/* Grid de tarjetas principales */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+/* Tarjeta genérica */
+.card {
+  background: var(--dash-card-bg);
+  border-radius: 0.9rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--dash-border);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--dash-primary);
+}
+
+.card-subtitle {
+  font-size: 0.8rem;
+  color: var(--dash-muted);
+}
+
+.card-body {
+  font-size: 0.9rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+/* Datos del alumno */
+.student-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.1rem;
+}
+
+.student-id {
+  font-size: 0.85rem;
+  color: var(--dash-muted);
+}
+
+.student-role {
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+}
+
+/* Badges y filas */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.16);
+  color: #92400E;
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border-bottom: 1px dashed #E5E7EB;
+  font-size: 0.88rem;
+}
+
+.info-list li:last-child {
+  border-bottom: none;
+}
+
+/* Lista de operaciones (botones) */
+.operations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.operation-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  background: #F9FAFB;
+  border-radius: 0.6rem;
+  border: 1px solid #E5E7EB;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+}
+
+.operation-btn:hover {
+  background: var(--dash-primary-soft);
+  border-color: var(--dash-primary);
+  transform: translateY(-1px);
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .dashboard-sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .sidebar-footer {
+    margin-left: auto;
+    margin-top: 0;
+  }
+
+  .dashboard-main {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
