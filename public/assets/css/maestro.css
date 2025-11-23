@@ -1,50 +1,69 @@
-/* public/assets/css/maestro.css */
-
-/* Botones de Acción en Tabla */
-.btn-action {
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-size: 0.85rem;
-    margin-right: 5px;
-    color: white;
-    text-decoration: none;
-    display: inline-block;
+:root {
+    --primary: #6f42c1; /* Morado */
+    --primary-dark: #563d7c;
+    --secondary: #007bff;
+    --success: #28a745;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --border: #dee2e6;
 }
-.btn-edit { background-color: #7C3AED; } /* Morado */
-.btn-delete { background-color: #EF4444; } /* Rojo */
-.btn-students { background-color: #F59E0B; color: white !important; } /* Naranja */
-.btn-grade { background-color: #10B981; color: white !important; } /* Verde */
 
-/* Modal (Ventana emergente) */
+/* Modal */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); z-index: 1000;
-    display: none; justify-content: center; align-items: center;
+    background: rgba(0,0,0,0.5); z-index: 1050; display: none;
+    justify-content: center; align-items: center;
 }
 .modal-box {
-    background: white; padding: 20px; border-radius: 10px;
-    width: 90%; max-width: 400px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background: white; width: 90%; max-width: 500px;
+    border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    overflow: hidden; animation: fadeIn 0.3s;
 }
 .modal-header {
-    display: flex; justify-content: space-between; margin-bottom: 15px;
-    border-bottom: 1px solid #eee; padding-bottom: 10px;
+    padding: 15px 20px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--light); font-weight: bold;
 }
+.modal-body { padding: 20px; }
 .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
 
-/* Mensajes de Feedback */
-.feedback { padding: 10px; border-radius: 5px; margin-top: 10px; display: none; font-weight: bold; }
-.feedback.success { background: #D1FAE5; color: #065F46; }
-.feedback.error { background: #FEE2E2; color: #991B1B; }
+/* Tablas */
+.table-responsive { overflow-x: auto; }
+.custom-table {
+    width: 100%; border-collapse: collapse; margin-top: 10px;
+}
+.custom-table th {
+    background: var(--primary); color: white; padding: 12px; text-align: left;
+}
+.custom-table td {
+    padding: 10px; border-bottom: 1px solid var(--border);
+}
+.custom-table tr:hover { background-color: #f1f1f1; }
 
-/* Gestión de Alumnos (Dos columnas) */
-.inscription-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.student-list-box { 
-    border: 1px solid #e5e7eb; padding: 10px; border-radius: 8px; 
-    height: 400px; overflow-y: auto; background: #f9fafb;
+/* Inputs de calificación */
+.input-grade {
+    width: 60px; padding: 5px; border: 1px solid var(--border);
+    border-radius: 4px; text-align: center;
 }
-.student-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 8px; border-bottom: 1px solid #eee; background: white; margin-bottom: 5px;
+.input-grade:focus { border-color: var(--primary); outline: none; }
+
+/* Botones */
+.btn {
+    padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer;
+    color: white; font-size: 0.9rem; text-decoration: none; display: inline-block;
 }
+.btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+.btn-primary { background: var(--primary); }
+.btn-success { background: var(--success); }
+.btn-danger { background: var(--danger); }
+.btn-warning { background: #ffc107; color: #212529; }
+
+/* Feedback */
+.feedback {
+    margin-top: 10px; padding: 10px; border-radius: 4px; display: none; text-align: center;
+}
+.feedback.success { background: #d4edda; color: #155724; }
+.feedback.error { background: #f8d7da; color: #721c24; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
