@@ -1,53 +1,26 @@
 <?php
-// api/maestro/get_alumnos_materia.php
-header('Content-Type: application/json; charset=utf-8');
-require_once '../../src/Database.php';
-require_once '../../src/Auth.php';
+require_once "../../src/Database.php";
+require_once "../../src/Auth.php";
+header("Content-Type: application/json");
 
-if (Auth::rol() !== 'maestro' || !Auth::isLoggedIn()) {
-    http_response_code(403);
-    echo json_encode(['error' => 'Acceso denegado.']);
-    exit;
-}
-
-$materia_id = $_GET['materia_id'] ?? null;
-if (!$materia_id || !is_numeric($materia_id)) {
-    http_response_code(400);
-    echo json_encode(['error' => 'ID de materia inválido.']);
-    exit;
-}
-
+$materiaId = $_GET['materia_id'];
 $pdo = Database::pdo();
 
-try {
-    // 1. Obtener nombre de la materia (para el título de la vista)
-    $stmt_materia = $pdo->prepare('SELECT nombre FROM materias WHERE id = ?');
-    $stmt_materia->execute([$materia_id]);
-    $materia = $stmt_materia->fetch();
+// 1. Info Materia
+$stmt = $pdo->prepare("SELECT nombre FROM materias WHERE id = ?");
+$stmt->execute([$materiaId]);
+$materia = $stmt->fetch();
 
-    // 2. Obtener alumnos y su calificación
-    $stmt_alumnos = $pdo->prepare('
-        SELECT 
-            u.id, 
-            u.nombre_completo AS nombre, 
-            c.calificacion
-        FROM usuarios u
+// 2. Alumnos y sus notas (LEFT JOIN con calificaciones)
+$sql = "SELECT u.id, u.nombre_completo as nombre, c.calificacion 
+        FROM usuarios u 
         JOIN inscripciones i ON u.id = i.alumno_id
-        LEFT JOIN calificaciones c ON u.id = c.alumno_id AND i.materia_id = c.materia_id
-        WHERE i.materia_id = ? AND u.rol = "alumno" AND u.activo = 1
-        ORDER BY u.nombre_completo
-    ');
-    $stmt_alumnos->execute([$materia_id]);
-    
-    $alumnos = $stmt_alumnos->fetchAll(PDO::FETCH_ASSOC);
-    
-    echo json_encode([
-        'nombre_materia' => $materia['nombre'] ?? 'Materia Desconocida',
-        'alumnos' => $alumnos
-    ]);
-    
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Error en el servidor: ' . $e->getMessage()]);
-}
-?>
+        LEFT JOIN calificaciones c ON (c.alumno_id = u.id AND c.materia_id = i.materia_id)
+        WHERE i.materia_id = ? AND u.rol = 'alumno'";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$materiaId]);
+
+echo json_encode([
+    "nombre_materia" => $materia['nombre'],
+    "alumnos" => $stmt->fetchAll()
+]);
