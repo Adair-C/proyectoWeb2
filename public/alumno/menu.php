@@ -46,6 +46,7 @@ $activo = (int)($user["activo"] ?? 0) === 1;
                 <li><a href="menu.php" class="active">Inicio</a></li>
                 <li><a href="materias.php">Materias</a></li>
                 <li><a href="calificaciones.php">Calificaciones</a></li>
+                <li><a href="inscripcion.php" style="color:#10B981;">+ Inscribir Materia</a></li>
                 <!-- agrega más enlaces según vayas creando vistas -->
             </ul>
         </div>
@@ -149,9 +150,6 @@ $activo = (int)($user["activo"] ?? 0) === 1;
                             </button>
                             <button class="operation-btn" type="button" onclick="window.location.href='materias.php'">
                                 Ver materias inscritas
-                            </button>
-                            <button class="operation-btn" type="button">
-                                Carga académica
                             </button>
                             <!-- Más opciones a futuro -->
                         </div>

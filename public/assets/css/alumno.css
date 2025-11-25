@@ -1,0 +1,66 @@
+/* public/assets/css/alumno.css */
+
+/* --- Estilos para Tarjetas de Materias --- */
+.subject-card { 
+    border-left: 5px solid var(--dash-primary); 
+    transition: transform 0.2s; 
+    background: white;
+}
+.subject-card:hover { 
+    transform: translateY(-3px); 
+}
+.subject-code { 
+    color: #6B7280; 
+    font-size: 0.85rem; 
+    font-weight: 600; 
+}
+.subject-teacher { 
+    font-size: 0.9rem; 
+    color: #4B5563; 
+    margin-top: 5px; 
+}
+.badge-group { 
+    background: #EEF2FF; 
+    color: #4F46E5; 
+    padding: 2px 8px; 
+    border-radius: 4px; 
+    font-size: 0.8rem; 
+    font-weight: bold; 
+}
+
+/* --- Estilos para Tabla de Calificaciones --- */
+.grades-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    background: white; 
+    border-radius: 8px; 
+    overflow: hidden; 
+}
+.grades-table th { 
+    background: #F3F4F6; 
+    color: #374151; 
+    font-weight: 600; 
+    padding: 12px; 
+    text-align: left; 
+}
+.grades-table td { 
+    padding: 12px; 
+    border-bottom: 1px solid #E5E7EB; 
+    color: #1F2937; 
+}
+
+/* Colores para calificaciones */
+.grade-number { 
+    font-family: 'Consolas', monospace; 
+    font-weight: bold; 
+}
+.grade-bad { 
+    color: #DC2626; /* Rojo */
+} 
+.grade-good { 
+    color: #059669; /* Verde */
+} 
+.grade-avg { 
+    background-color: #F9FAFB; 
+    font-weight: 800; 
+}

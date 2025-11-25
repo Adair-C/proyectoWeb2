@@ -185,7 +185,7 @@ body {
 
 .card-body {
   font-size: 0.9rem;
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto;
 }
 
@@ -296,4 +296,14 @@ body {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Quita el límite de altura solo en la sección de tablas */
+.table-responsive {
+    max-height: none !important;
+    overflow-y: visible !important;
+}
+/* O si la tabla está directo en card-body */
+.card-body:has(table) {
+    max-height: none;
 }
