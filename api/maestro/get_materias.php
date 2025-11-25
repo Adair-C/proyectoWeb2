@@ -1,30 +1,23 @@
 <?php
-// api/maestro/get_materias.php
-header('Content-Type: application/json; charset=utf-8');
-require_once '../../src/Database.php';
-require_once '../../src/Auth.php';
+require_once "../../src/Database.php";
+require_once "../../src/Auth.php";
+header("Content-Type: application/json; charset=utf-8");
 
-// Asegura que el usuario esté logueado como maestro
-if (Auth::rol() !== 'maestro' || !Auth::isLoggedIn()) {
+if (!Auth::isLoggedIn() || Auth::rol() !== 'maestro') {
     http_response_code(403);
-    echo json_encode(['error' => 'Acceso denegado.']);
-    exit;
+    exit(json_encode(['error' => 'Acceso denegado.']));
 }
 
 $maestro_id = Auth::userId();
 $pdo = Database::pdo();
 
 try {
-    // Consulta para obtener las materias asignadas al maestro_id
+    // Seleccionamos TODOS los campos (m.*) para tener grupo y unidades
     $stmt = $pdo->prepare('
-        SELECT 
-            m.id, 
-            m.nombre, 
-            m.codigo
-        FROM materias m
+        SELECT m.* FROM materias m
         JOIN asignacion_maestro_materia amm ON m.id = amm.materia_id
         WHERE amm.maestro_id = ? AND m.activo = 1
-        ORDER BY m.nombre
+        ORDER BY m.nombre ASC
     ');
     $stmt->execute([$maestro_id]);
     

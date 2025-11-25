@@ -1,22 +1,9 @@
 <?php
-require_once "../../src/Database.php";
 require_once "../../src/Auth.php";
 require_once "../../src/Middleware.php";
 Middleware::requireRole("maestro");
 
-$pdo = Database::pdo();
-$id = Auth::userId();
 $nombre_maestro = Auth::nombreCompleto();
-
-// Obtener grupos y conteo
-$sql = "SELECT m.grupo, COUNT(*) as total 
-        FROM materias m 
-        JOIN asignacion_maestro_materia a ON m.id = a.materia_id 
-        WHERE a.maestro_id = ? 
-        GROUP BY m.grupo ORDER BY m.grupo";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$id]);
-$grupos = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -51,24 +38,11 @@ $grupos = $stmt->fetchAll();
             <div class="dashboard-header-title">👥 Mis Grupos</div>
         </header>
 
-        <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
-            <?php if(empty($grupos)): ?>
-                <p>No tienes grupos asignados aún.</p>
-            <?php else: ?>
-                <?php foreach($grupos as $g): ?>
-                <div class="card" style="text-align:center;">
-                    <div class="card-body">
-                        <h1 style="font-size:3rem; color:var(--primary); margin:0;"><?php echo htmlspecialchars($g['grupo']); ?></h1>
-                        <p style="color:#666; margin-bottom:15px;">GRUPO</p>
-                        <span class="badge badge-info"><?php echo $g['total']; ?> Materia(s)</span>
-                        <br><br>
-                        <a href="materias.php" class="btn btn-primary">Ver / Editar Materias</a>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
+        <div id="grupos-container" class="dashboard-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+            </div>
     </main>
 </div>
+
+<script src="../assets/js/maestro-grupos.js"></script>
 </body>
 </html>
