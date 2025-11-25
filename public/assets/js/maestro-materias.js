@@ -1,143 +1,123 @@
-// public/assets/js/maestro-materias.js
-
 document.addEventListener('DOMContentLoaded', () => {
-    loadMaterias();
-    
-    // Reloj
-    setInterval(() => {
-        const el = document.getElementById("dashboard-clock");
-        if(el) el.textContent = new Date().toLocaleTimeString();
-    }, 1000);
+    loadMaterias(); // <--- AQUÍ SE LLAMA A LA API AL INICIAR
 });
 
 let isEditing = false;
 
-// --- CARGAR MATERIAS ---
+// --- CARGAR TABLA DESDE API ---
 async function loadMaterias() {
     const tbody = document.getElementById('materias-body');
-    tbody.innerHTML = '<tr><td colspan="4">Cargando...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Cargando materias...</td></tr>';
 
     try {
         const res = await fetch('../../api/maestro/get_materias.php');
         const data = await res.json();
 
         tbody.innerHTML = '';
-        
+
         if (data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4">No tienes materias registradas.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No tienes materias registradas.</td></tr>';
             return;
         }
 
-        data.forEach(materia => {
+        data.forEach(m => {
             const row = document.createElement('tr');
-            // Escapamos comillas para pasarlo al onclick
-            const json = JSON.stringify(materia).replace(/"/g, '&quot;');
             
+            // Convertimos el objeto a string JSON seguro para ponerlo en el atributo data
+            const jsonMateria = JSON.stringify(m).replace(/"/g, '&quot;');
+
             row.innerHTML = `
-                <td>${materia.codigo}</td>
-                <td>${materia.nombre}</td>
+                <td>${m.codigo}</td>
+                <td>${m.nombre}</td>
+                <td><span class="badge badge-info">${m.grupo}</span></td>
+                <td>${m.unidades}</td>
                 <td>
-                    <button class="btn-action btn-edit" onclick="openModal(true, ${json})">✏️ Editar</button>
-                    <button class="btn-action btn-delete" onclick="deleteMateria(${materia.id})">🗑️ Borrar</button>
-                </td>
-                <td>
-                    <a href="gestionar_alumnos.php?id=${materia.id}" class="btn-action btn-students">👥 Alumnos</a>
-                    <a href="materia.php?id=${materia.id}" class="btn-action btn-grade">✅ Calificar</a>
+                    <button class="btn btn-primary" 
+                            data-materia="${jsonMateria}" 
+                            onclick="openMateriaModal(true, this.dataset.materia)">
+                        Editar
+                    </button>
+                    
+                    <button class="btn btn-danger" onclick="deleteMateria(${m.id})">Borrar</button>
+                    
+                    <a href="gestionar_alumnos.php?id=${m.id}" class="btn btn-warning">Alumnos</a>
+                    <a href="materia.php?id=${m.id}" class="btn btn-success">Calificar</a>
                 </td>
             `;
             tbody.appendChild(row);
         });
 
     } catch (error) {
-        tbody.innerHTML = '<tr><td colspan="4" style="color:red">Error al cargar datos</td></tr>';
+        console.error(error);
+        tbody.innerHTML = '<tr><td colspan="5" style="color:red; text-align:center">Error de conexión.</td></tr>';
     }
 }
 
 // --- MODAL ---
-window.openModal = function(edit = false, materia = {}) {
+window.openMateriaModal = function(edit = false, materiaData = null) {
     isEditing = edit;
     const modal = document.getElementById('modal-materia');
-    const title = document.getElementById('modal-title');
     const form = document.getElementById('form-materia');
-    const feedback = document.getElementById('modal-feedback');
-
-    feedback.style.display = 'none';
+    document.getElementById('modal-feedback').style.display = 'none';
     form.reset();
-    modal.style.display = 'flex';
-
-    if (edit) {
-        title.textContent = 'Editar Materia';
+    
+    document.getElementById('modal-title').innerText = edit ? 'Editar Materia' : 'Nueva Materia';
+    
+    if (edit && materiaData) {
+        let materia = (typeof materiaData === 'string') ? JSON.parse(materiaData) : materiaData;
         document.getElementById('materia_id').value = materia.id;
         document.getElementById('nombre').value = materia.nombre;
         document.getElementById('codigo').value = materia.codigo;
+        document.getElementById('grupo').value = materia.grupo;
+        document.getElementById('unidades').value = materia.unidades;
     } else {
-        title.textContent = 'Nueva Materia';
         document.getElementById('materia_id').value = '';
     }
+    modal.style.display = 'flex';
 }
 
-window.closeModal = function() {
+window.closeMateriaModal = function() {
     document.getElementById('modal-materia').style.display = 'none';
 }
 
-// --- GUARDAR (CREATE / UPDATE) ---
-document.getElementById('form-materia').addEventListener('submit', async (e) => {
+// --- GUARDAR ---
+window.saveMateria = async function(e) {
     e.preventDefault();
-    const feedback = document.getElementById('modal-feedback');
     const formData = new FormData(e.target);
-    
-    const data = {
-        id: formData.get('id'),
-        nombre: formData.get('nombre'),
-        codigo: formData.get('codigo')
-    };
-
+    const data = Object.fromEntries(formData.entries());
     const method = isEditing ? 'PUT' : 'POST';
+    const feedback = document.getElementById('modal-feedback');
 
     try {
         const res = await fetch('../../api/maestro/materia_crud.php', {
             method: method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
         const result = await res.json();
-
-        feedback.style.display = 'block';
-        feedback.textContent = result.message || result.error;
         
-        if (res.ok) {
-            feedback.className = 'feedback success';
+        feedback.style.display = 'block';
+        feedback.innerText = result.message || result.error;
+        feedback.className = res.ok ? 'feedback success' : 'feedback error';
+
+        if(res.ok) {
             setTimeout(() => {
-                closeModal();
-                loadMaterias();
+                closeMateriaModal();
+                loadMaterias(); // Recargar tabla sin recargar página
             }, 1000);
-        } else {
-            feedback.className = 'feedback error';
         }
-    } catch (err) {
-        console.error(err);
-    }
-});
+    } catch (err) { console.error(err); }
+}
 
-// --- ELIMINAR ---
+// --- BORRAR ---
 window.deleteMateria = async function(id) {
-    if(!confirm('¿Estás seguro? Se borrarán alumnos y calificaciones de esta materia.')) return;
-
+    if(!confirm("¿Eliminar materia?")) return;
     try {
         const res = await fetch('../../api/maestro/materia_crud.php', {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id})
         });
-        const result = await res.json();
-        
-        if(res.ok) {
-            alert('Materia eliminada');
-            loadMaterias();
-        } else {
-            alert('Error: ' + result.error);
-        }
-    } catch (err) {
-        alert('Error de red');
-    }
+        if(res.ok) loadMaterias(); // Recargar tabla
+    } catch(err) { alert("Error de conexión"); }
 }
