@@ -86,6 +86,9 @@ $totalMaterias = $pdo->query("SELECT COUNT(*) FROM materias")->fetchColumn();
                         <button class="btn btn-primary" style="background:#10B981;" onclick="location.href='materias.php'">
                             📚 Catálogo de Materias
                         </button>
+                        <button class="btn btn-primary" style="background:#6366F1;" onclick="window.open('../../api/superadmin/reporte_general.php', '_blank')">
+                            📊 Generar Reporte PDF
+                        </button>
                     </div>
                 </div>
             </div>

@@ -43,6 +43,11 @@ $nombreUsuario = Auth::nombreCompleto() ?? "Alumno";
     <main class="dashboard-main">
         <header class="dashboard-header">
             <div class="dashboard-header-title">📊 Kárdex de Calificaciones</div>
+            <div style="margin-top: 10px; text-align: right;">
+                <a href="../../api/alumno/reporte_kardex.php" target="_blank" class="btn btn-primary" style="background-color: #DC2626;">
+                📄 Descargar Reporte (PDF)
+                 </a>
+            </div>
         </header>
 
         <div class="card">
