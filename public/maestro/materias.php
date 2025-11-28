@@ -15,7 +15,13 @@ $nombre_maestro = Auth::nombreCompleto();
 <body>
 <div class="dashboard">
     <aside class="dashboard-sidebar">
-        <div class="sidebar-logo">CONTROL <span>ESCOLAR</span></div>
+        <div class="sidebar-brand">
+            <img src="../assets/img/logo.png" alt="Logo"> 
+            <div class="sidebar-brand-text">
+                CONTROL<br>
+                <span style="color: #a78bfa;">ESCOLAR</span>
+            </div>
+        </div>
         <div class="sidebar-user">
             <span>Maestro:</span>
             <strong><?php echo htmlspecialchars($nombre_maestro); ?></strong>
@@ -24,6 +30,7 @@ $nombre_maestro = Auth::nombreCompleto();
             <li><a href="menu.php">Inicio</a></li>
             <li><a href="materias.php" class="active">Materias</a></li>
             <li><a href="grupos.php">Mis Grupos</a></li>
+            <li><a href="reportes.php" style="color: #FBBF24;">📊 Reportes</a></li>
         </ul>
     </aside>
 

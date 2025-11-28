@@ -244,29 +244,74 @@ body {
   border-bottom: none;
 }
 
-/* Lista de operaciones (botones) */
-.operations-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px; 
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; 
 }
 
-.operation-btn {
-  width: 100%;
-  text-align: left;
-  padding: 0.5rem 0.6rem;
-  background: #F9FAFB;
-  border-radius: 0.6rem;
-  border: 1px solid #E5E7EB;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+.btn:hover {
+    transform: translateY(-2px); 
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    filter: brightness(1.1);
 }
 
-.operation-btn:hover {
-  background: var(--dash-primary-soft);
-  border-color: var(--dash-primary);
-  transform: translateY(-1px);
+.btn:active {
+    transform: translateY(1px);
+}
+
+/* Colores Específicos */
+.btn-primary { 
+    background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%); 
+    color: white; 
+}
+
+.btn-success { 
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); 
+    color: white; 
+}
+
+.btn-danger { 
+    background: linear-gradient(135deg, #dc3545 0%, #bd2130 100%); 
+    color: white; 
+}
+
+.btn-warning { 
+    background: linear-gradient(135deg, #ffc107 0%, #d39e00 100%); 
+    color: #212529; 
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar-brand img {
+    width: 40px;
+    height: auto;
+}
+.sidebar-brand-text {
+    font-weight: 800;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: white;
+}
+.sidebar-brand-text span {
+    color: var(--dash-primary); 
 }
 
 /* Responsivo */
@@ -298,12 +343,42 @@ body {
   }
 }
 
-/* Quita el límite de altura solo en la sección de tablas */
 .table-responsive {
     max-height: none !important;
     overflow-y: visible !important;
 }
-/* O si la tabla está directo en card-body */
+
 .card-body:has(table) {
     max-height: none;
+}
+
+.form-select {
+    appearance: none;        
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    background-color: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 10px 15px;
+    padding-right: 40px;    
+    font-size: 0.95rem;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2em;
+}
+
+.form-select:hover {
+    border-color: #7C3AED; 
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #7C3AED;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1); 
 }

@@ -32,8 +32,9 @@ if (Auth::isLoggedIn()) {
     <div class="auth-card">
 
         <div class="auth-card-header">
+            <img src="assets/img/logo.png" alt="Logo" style="width: 150px; margin-bottom: 15px;">
             <span class="auth-tag">
-                Bienvenido de nuevo
+               
             </span>
             <h1 class="auth-title">Iniciar sesión</h1>
             <p class="auth-subtitle">

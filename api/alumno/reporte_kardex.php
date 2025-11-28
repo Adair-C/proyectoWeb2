@@ -10,7 +10,6 @@ $nombreAlumno = Auth::nombreCompleto();
 $pdo = Database::pdo();
 
 // 1. Obtener materias y notas
-// Usamos una consulta para traer materias y luego procesaremos las notas
 $sql = "SELECT m.id, m.nombre, m.codigo, m.grupo, m.unidades 
         FROM inscripciones i
         JOIN materias m ON i.materia_id = m.id
@@ -34,15 +33,44 @@ foreach($notasRaw as $row) {
 
 class PDF extends FPDF {
     function Header() {
-        $this->SetFont('Arial','B',15);
-        $this->Cell(0,10,utf8_decode('Reporte de Calificaciones (Kárdex)'),0,1,'C');
-        $this->Ln(5);
+  
+        $logoFile = '../../public/assets/img/logo.png';
+
+        if(file_exists($logoFile)){
+            $this->Image($logoFile, 10, 8, 25); 
+        }
+
+        $this->SetFont('Arial','B',16);
+        
+        $this->Cell(30); 
+        $this->Cell(0,10,utf8_decode('Sistema de Control Escolar'),0,1,'L');
+        
+        $this->SetFont('Arial','',10);
+        $this->Cell(30);
+        $this->Cell(0,5,utf8_decode('Reporte Oficial de Calificaciones'),0,1,'L');
+        
+        $this->SetDrawColor(111, 66, 193); 
+        $this->SetLineWidth(1);
+        $this->Line(10, 35, 285, 35); 
+        $this->Ln(15);
     }
     function Footer() {
-        $this->SetY(-15);
-        $this->SetFont('Arial','I',8);
-        $this->Cell(0,10,'Pagina '.$this->PageNo().'/{nb}',0,0,'C');
-    }
+    $this->SetY(-20);
+    
+    $this->SetDrawColor(200, 200, 200);
+
+    $anchoPagina = $this->GetPageWidth();
+    $this->Line(10, $this->GetY(), $anchoPagina - 10, $this->GetY());
+    
+    $this->Ln(4); 
+
+    $this->SetFont('Arial', 'I', 8);
+    $this->SetTextColor(128, 128, 128); 
+
+    $this->Cell(0, 10, utf8_decode('Sistema de Control Escolar - Documento Oficial'), 0, 0, 'L');
+    $this->SetX(-30); 
+    $this->Cell(0, 10, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+}
 }
 
 $pdf = new PDF();
@@ -90,9 +118,9 @@ if(empty($materias)) {
         else if($promedio != '-') $pdf->SetTextColor(0,128,0);
         
         $pdf->Cell(50,10,$promedio,1,1,'C');
-        $pdf->SetTextColor(0,0,0); // Reset color
+        $pdf->SetTextColor(0,0,0); 
     }
 }
 
-$pdf->Output('I', 'Kardex_'.$alumnoId.'.pdf'); // 'I' para mostrar en navegador
+$pdf->Output('I', 'Kardex_'.$alumnoId.'.pdf'); 
 ?>

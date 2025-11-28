@@ -8,7 +8,7 @@ if (!Auth::isLoggedIn() || Auth::rol() !== 'maestro') exit(json_encode(["error"=
 $data = json_decode(file_get_contents('php://input'), true);
 $materiaId = $data['materia_id'];
 $alumnoId = $data['alumno_id'];
-$accion = $data['accion']; // 'inscribir' o 'desinscribir'
+$accion = $data['accion']; 
 
 $pdo = Database::pdo();
 

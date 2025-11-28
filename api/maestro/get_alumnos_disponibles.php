@@ -34,7 +34,7 @@ try {
     $disponibles = $stmt->fetchAll();
 
     echo json_encode([
-        "materia" => $nombreMateria, // Enviamos el nombre aquí
+        "materia" => $nombreMateria,
         "inscritos" => $inscritos, 
         "disponibles" => $disponibles
     ]);

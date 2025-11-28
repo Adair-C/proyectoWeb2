@@ -29,9 +29,13 @@ $activo = (int)($user["activo"] ?? 0) === 1;
     <!-- Sidebar -->
     <aside class="dashboard-sidebar">
         <div>
-            <div class="sidebar-logo">
-                CONTROL <span>ESCOLAR</span>
+            <div class="sidebar-brand">
+            <img src="../assets/img/logo.png" alt="Logo"> 
+            <div class="sidebar-brand-text">
+                CONTROL<br>
+                <span style="color: #a78bfa;">ESCOLAR</span>
             </div>
+        </div>
 
             <div class="sidebar-user">
                 <span>Alumno:</span>

@@ -16,7 +16,13 @@ Middleware::requireRole("superadmin");
 
     <aside class="dashboard-sidebar">
         <div>
-            <div class="sidebar-logo">PANEL <span>ADMIN</span></div>
+            <div class="sidebar-brand">
+            <img src="../assets/img/logo.png" alt="Logo"> 
+            <div class="sidebar-brand-text">
+                CONTROL<br>
+                <span style="color: #a78bfa;">ESCOLAR</span>
+            </div>
+        </div>
             <div class="sidebar-user">
                 <span>Sesión:</span>
                 <strong>Super Admin</strong>
@@ -26,6 +32,7 @@ Middleware::requireRole("superadmin");
                 <li><a href="menu.php">Inicio</a></li>
                 <li><a href="usuarios.php">Usuarios</a></li>
                 <li><a href="materias.php" class="active">Materias</a></li>
+                <li><a href="reportes.php" style="color: #FBBF24;">📊 Reportes</a></li>
             </ul>
         </div>
         <div class="sidebar-footer">

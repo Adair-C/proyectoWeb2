@@ -26,7 +26,6 @@ $stmt = $pdo->prepare("SELECT alumno_id, unidad, calificacion FROM calificacione
 $stmt->execute([$materiaId]);
 $notasRaw = $stmt->fetchAll();
 
-// Organizar notas para fácil acceso en JS { alumno_id: { unidad: nota } }
 $notas = [];
 foreach($notasRaw as $row) {
     $notas[$row['alumno_id']][$row['unidad']] = $row['calificacion'];

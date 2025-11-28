@@ -31,7 +31,13 @@ $totalMaterias = $pdo->query("SELECT COUNT(*) FROM materias")->fetchColumn();
 
     <aside class="dashboard-sidebar">
         <div>
-            <div class="sidebar-logo">PANEL <span>ADMIN</span></div>
+            <div class="sidebar-brand">
+            <img src="../assets/img/logo.png" alt="Logo"> 
+            <div class="sidebar-brand-text">
+                CONTROL<br>
+                <span style="color: #a78bfa;">ESCOLAR ADMIN</span>
+            </div>
+        </div>
             <div class="sidebar-user">
                 <span>Sesión:</span>
                 <strong>Super Admin</strong>
@@ -41,6 +47,7 @@ $totalMaterias = $pdo->query("SELECT COUNT(*) FROM materias")->fetchColumn();
                 <li><a href="menu.php" class="active">Inicio</a></li>
                 <li><a href="usuarios.php">Usuarios</a></li>
                 <li><a href="materias.php">Materias</a></li>
+                <li><a href="reportes.php" style="color: #FBBF24;">📊 Reportes</a></li>
             </ul>
         </div>
         <div class="sidebar-footer">

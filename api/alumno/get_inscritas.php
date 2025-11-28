@@ -1,5 +1,4 @@
 <?php
-// api/alumno/get_inscritas.php
 require_once "../../src/Database.php";
 require_once "../../src/Auth.php";
 header("Content-Type: application/json");
