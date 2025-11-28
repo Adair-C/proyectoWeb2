@@ -7,7 +7,7 @@ Middleware::requireRole("superadmin");
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Usuarios</title>
+    <title>Gestión de Usuarios | Admin</title>
     <link rel="stylesheet" href="../assets/css/dashboard.css">
     <link rel="stylesheet" href="../assets/css/maestro.css"> </head>
 <body>
@@ -17,15 +17,9 @@ Middleware::requireRole("superadmin");
         <div>
             <div class="sidebar-brand">
             <img src="../assets/img/logo.png" alt="Logo"> 
-            <div class="sidebar-brand-text">
-                CONTROL<br>
-                <span style="color: #a78bfa;">ESCOLAR</span>
-            </div>
+            <div class="sidebar-brand-text">CONTROL<br><span style="color: #a78bfa;">ESCOLAR</span></div>
         </div>
-            <div class="sidebar-user">
-                <span>Sesión:</span>
-                <strong>Super Admin</strong>
-            </div>
+            <div class="sidebar-user"><span>Sesión:</span><strong>Super Admin</strong></div>
             <div class="sidebar-section-title">Administración</div>
             <ul class="sidebar-menu">
                 <li><a href="menu.php">Inicio</a></li>
@@ -35,15 +29,14 @@ Middleware::requireRole("superadmin");
             </ul>
         </div>
         <div class="sidebar-footer">
-            <form action="../logout.php" method="post">
-                <button class="sidebar-logout">Cerrar sesión</button>
-            </form>
+            <form action="../logout.php" method="post"><button class="sidebar-logout">Cerrar sesión</button></form>
         </div>
     </aside>
+
     <main class="dashboard-main">
         <div class="dashboard-header">
             <div class="dashboard-header-title">👥 Usuarios del Sistema</div>
-            <button class="btn btn-success" onclick="openModal()">+ Nuevo Usuario</button>
+            <button class="btn btn-success" onclick="openUserModal()">+ Nuevo Usuario</button>
         </div>
 
         <div class="card">
@@ -60,7 +53,7 @@ Middleware::requireRole("superadmin");
                         </tr>
                     </thead>
                     <tbody id="tabla-usuarios">
-                        <tr><td colspan="6">Cargando...</td></tr>
+                        <tr><td colspan="6" style="text-align:center">Cargando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -72,7 +65,7 @@ Middleware::requireRole("superadmin");
     <div class="modal-box">
         <div class="modal-header">
             <span id="modal-title">Usuario</span>
-            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <button class="close-modal" onclick="closeUserModal()">&times;</button>
         </div>
         <div class="modal-body">
             <form id="form-user">
@@ -94,7 +87,7 @@ Middleware::requireRole("superadmin");
                     <option value="superadmin">Superadmin</option>
                 </select>
 
-                <label>Contraseña <small>(Dejar vacía para no cambiar)</small></label>
+                <label>Contraseña <small style="color:#666">(Dejar vacía para no cambiar)</small></label>
                 <input type="password" name="password" id="password" class="form-input" style="width:100%; margin-bottom:10px;">
 
                 <label>Estado</label>
@@ -102,113 +95,15 @@ Middleware::requireRole("superadmin");
                     <option value="1">Activo</option>
                     <option value="0">Inactivo</option>
                 </select>
-
+                
+                <div id="feedback" class="feedback"></div>
                 <button type="submit" class="btn btn-primary" style="width:100%">Guardar</button>
             </form>
         </div>
     </div>
 </div>
 
-<script>
-let isEdit = false;
+<script src="../assets/js/superadmin-usuarios.js"></script>
 
-document.addEventListener('DOMContentLoaded', loadUsers);
-
-async function loadUsers() {
-    try {
-        const res = await fetch('../../api/superadmin/get_usuarios.php');
-        const users = await res.json();
-        const tbody = document.getElementById('tabla-usuarios');
-        tbody.innerHTML = '';
-
-        if(users.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6">No hay usuarios registrados.</td></tr>';
-            return;
-        }
-
-        users.forEach(u => {
-            // Escapar datos para evitar errores en el JSON al pasar a la funcion
-            const userJson = JSON.stringify(u).replace(/"/g, '&quot;');
-            
-            tbody.innerHTML += `
-                <tr>
-                    <td>${u.id}</td>
-                    <td>${u.username}</td>
-                    <td>${u.nombre_completo}</td>
-                    <td><span class="badge badge-info">${u.rol.toUpperCase()}</span></td>
-                    <td>${u.activo == 1 ? '<span style="color:green">● Activo</span>' : '<span style="color:red">● Inactivo</span>'}</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="editUser(${userJson})">Editar</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">Borrar</button>
-                    </td>
-                </tr>
-            `;
-        });
-    } catch(err) {
-        console.error(err);
-    }
-}
-
-function openModal() {
-    isEdit = false;
-    document.getElementById('form-user').reset();
-    document.getElementById('userId').value = '';
-    document.getElementById('modal-title').textContent = "Nuevo Usuario";
-    document.getElementById('modal-user').style.display = 'flex';
-}
-
-function closeModal() {
-    document.getElementById('modal-user').style.display = 'none';
-}
-
-window.editUser = function(u) {
-    isEdit = true;
-    document.getElementById('userId').value = u.id;
-    document.getElementById('nombre').value = u.nombre_completo;
-    document.getElementById('username').value = u.username;
-    document.getElementById('email').value = u.email;
-    document.getElementById('rol').value = u.rol;
-    document.getElementById('activo').value = u.activo;
-    document.getElementById('password').value = ""; // Limpiar password
-    
-    document.getElementById('modal-title').textContent = "Editar Usuario";
-    document.getElementById('modal-user').style.display = 'flex';
-}
-
-document.getElementById('form-user').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    
-    const method = isEdit ? 'PUT' : 'POST';
-    
-    try {
-        const res = await fetch('../../api/superadmin/usuario_crud.php', {
-            method: method,
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        });
-        
-        if(res.ok) {
-            closeModal();
-            loadUsers();
-        } else {
-            alert("Error al guardar usuario");
-        }
-    } catch(err) { alert("Error de conexión"); }
-});
-
-window.deleteUser = async function(id) {
-    if(!confirm('¿Eliminar usuario permanentemente?')) return;
-    try {
-        await fetch('../../api/superadmin/usuario_crud.php', {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id})
-        });
-        loadUsers();
-    } catch(err) { alert("Error de conexión"); }
-}
-</script>
 </body>
 </html>
