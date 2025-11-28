@@ -32,7 +32,7 @@ if (Auth::isLoggedIn()) {
     <div class="auth-card">
 
         <div class="auth-card-header">
-            <img src="assets/img/logo.png" alt="Logo" style="width: 150px; margin-bottom: 15px;">
+            <img src="assets/img/logo2.png" alt="Logo" style="width: 150px; margin-bottom: 15px;">
             <span class="auth-tag">
                
             </span>
