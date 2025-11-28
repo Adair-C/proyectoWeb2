@@ -10,7 +10,7 @@ class Database {
             $port = "3306";
             $db   = "control";
             $user = "root";
-            $pass = "1112019"; 
+            $pass = "root"; 
 
             $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
 

@@ -1,4 +1,5 @@
 <?php
+
 require_once "../src/Database.php";
 
 header("Content-Type: application/json; charset=utf-8");
@@ -11,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 
 $data = json_decode(file_get_contents("php://input"), true);
+
 
 $username   = trim($data["username"] ?? "");
 $password   = trim($data["password"] ?? "");
@@ -26,8 +28,16 @@ if (empty($username) || empty($password) || empty($nombre) || empty($email) || e
 }
 
 
-if (!preg_match("/^[a-zA-Z0-9ñÑ]+$/", $username)) {
-    echo json_encode(["error" => "El nombre de usuario solo puede contener letras y números."]);
+
+
+if (!preg_match("/^[a-zA-Z0-9ñÑ]+$/u", $username)) {
+    echo json_encode(["error" => "El usuario solo puede contener letras y números."]);
+    exit;
+}
+
+
+if (!preg_match("/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u", $nombre)) {
+    echo json_encode(["error" => "El nombre contiene caracteres inválidos."]);
     exit;
 }
 
@@ -52,12 +62,12 @@ if (!in_array($rol, ["alumno", "maestro"])) {
 try {
     $pdo = Database::pdo();
 
-    
+  
     $query = $pdo->prepare("SELECT id FROM usuarios WHERE username = ? OR email = ?");
     $query->execute([$username, $email]);
 
     if ($query->fetch()) {
-        echo json_encode(["error" => "Usuario o email ya registrado"]);
+        echo json_encode(["error" => "El usuario o el correo ya están registrados"]);
         exit;
     }
 
