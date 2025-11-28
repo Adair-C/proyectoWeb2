@@ -45,7 +45,7 @@ function renderList(container, users, action) {
         div.className = 'student-item';
         
         const btnClass = action === 'inscribir' ? 'btn-success' : 'btn-danger';
-        const btnText = action === 'inscribir' ? '+' : '×'; // Iconos simples
+        const btnText = action === 'inscribir' ? '+' : '×'; 
 
         div.innerHTML = `
             <span>${u.nombre}</span>

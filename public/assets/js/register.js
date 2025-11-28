@@ -1,17 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("form-register");
     const feedback = document.getElementById("feedback");
-    
-    // Inputs
+
     const usernameInput = document.getElementById("username");
     const nombreInput = document.getElementById("nombre");
     const emailInput = document.getElementById("email");
 
     if (!form) return;
 
-    // --- 1. VALIDACIÓN USUARIO (En tiempo real) ---
-    // Regla: Solo Letras, Números y ñ/Ñ.
-    // Bloquea: Espacios, @, _, -, y cualquier otro símbolo.
     usernameInput.addEventListener("input", (e) => {
         const invalidChars = /[^a-zA-Z0-9ñÑ]/g;
         if (invalidChars.test(e.target.value)) {
@@ -19,9 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- 2. VALIDACIÓN NOMBRE (En tiempo real) ---
-    // Regla: Solo Letras, Acentos (áéíóú), ñ/Ñ y Espacios.
-    // Bloquea: Números y símbolos especiales.
+
     if (nombreInput) {
         nombreInput.addEventListener("input", (e) => {
             const invalidChars = /[^a-zA-ZñÑáéíóúÁÉÍÓÚ\s]/g;
@@ -31,9 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 3. VALIDACIÓN CORREO (En tiempo real) ---
-    // Regla: Solo Letras, Números, @, ., _, -
-    // Bloquea: $, %, &, *, (), etc.
     if (emailInput) {
         emailInput.addEventListener("input", (e) => {
             const invalidChars = /[^a-zA-Z0-9@._-]/g;

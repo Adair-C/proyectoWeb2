@@ -1,18 +1,19 @@
 <?php
-require_once "../src/Auth.php";
 
+require_once "../app/Helpers/Auth.php";
 
+// Verificamos si ya hay sesión
 if (Auth::isLoggedIn()) {
     $rol = Auth::rol();
     switch ($rol) {
         case "alumno":
-            header("Location: /proyectoWeb2/public/alumno/menu.php");
+            header("Location: alumno/menu.php");
             break;
         case "maestro":
-            header("Location: /proyectoWeb2/public/maestro/menu.php");
+            header("Location: maestro/menu.php");
             break;
         case "superadmin":
-            header("Location: /proyectoWeb2/public/superadmin/menu.php");
+            header("Location: superadmin/menu.php");
             break;
     }
     exit;
@@ -30,54 +31,28 @@ if (Auth::isLoggedIn()) {
 
 <div class="auth-page">
     <div class="auth-card">
-
         <div class="auth-card-header">
             <img src="assets/img/logo2.png" alt="Logo" style="width: 150px; margin-bottom: 15px;">
-            <span class="auth-tag">
-            </span>
             <h1 class="auth-title">Iniciar sesión</h1>
-            <p class="auth-subtitle">
-                Accede con tu usuario o correo y contraseña.
-            </p>
+            <p class="auth-subtitle">Accede con tu usuario o correo y contraseña.</p>
         </div>
 
         <form id="form-login" class="auth-form">
             <div class="form-row">
                 <label for="username" class="form-label">Usuario o correo</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    class="form-input"
-                    placeholder="Ej. ElChelos o tu@correo.com"
-                    required
-                >
+                <input type="text" id="username" name="username" class="form-input" placeholder="Ej. ElChelos o tu@correo.com" required>
             </div>
-
             <div class="form-row">
                 <label for="password" class="form-label">Contraseña</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    class="form-input"
-                    placeholder="Tu contraseña"
-                    required
-                >
+                <input type="password" id="password" name="password" class="form-input" placeholder="Tu contraseña" required>
             </div>
-
             <div id="feedback" class="feedback"></div>
-
-            <button type="submit" class="btn-primary">
-                Entrar
-            </button>
+            <button type="submit" class="btn-primary">Entrar</button>
         </form>
 
         <div class="auth-footer">
-            ¿Aún no tienes cuenta?
-            <a href="register.php">Crear cuenta</a>
+            ¿Aún no tienes cuenta? <a href="register.php">Crear cuenta</a>
         </div>
-
     </div>
 </div>
 

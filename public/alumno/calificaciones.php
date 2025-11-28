@@ -1,6 +1,7 @@
 <?php
-require_once "../../src/Auth.php";
-require_once "../../src/Middleware.php";
+require_once "../../app/Config/Database.php";
+require_once "../../app/Helpers/Auth.php";
+require_once "../../app/Helpers/Middleware.php";
 Middleware::requireRole("alumno");
 
 // Datos para el sidebar

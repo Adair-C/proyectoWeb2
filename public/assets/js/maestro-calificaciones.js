@@ -69,7 +69,7 @@ window.saveGrade = async function(input) {
         calificacion: input.value
     };
     
-    input.style.borderColor = "#ffc107"; // Amarillo (Guardando)
+    input.style.borderColor = "#ffc107"; 
 
     try {
         const res = await fetch('../../api/maestro/guardar_calificacion.php', {
@@ -79,11 +79,11 @@ window.saveGrade = async function(input) {
         });
         
         if(res.ok) {
-            input.style.borderColor = "#28a745"; // Verde (Éxito)
+            input.style.borderColor = "#28a745"; 
         } else {
-            input.style.borderColor = "#dc3545"; // Rojo (Error backend)
+            input.style.borderColor = "#dc3545";
         }
     } catch(err) { 
-        input.style.borderColor = "#dc3545"; // Rojo (Error red)
+        input.style.borderColor = "#dc3545"; 
     }
 }

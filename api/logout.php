@@ -1,5 +1,6 @@
 <?php
-// api/logout.php
-require_once __DIR__ . '/../src/Auth.php';
+require_once "../app/Helpers/Auth.php";
 Auth::logout();
-http_response_code(204); // sin contenido
+header("Location: ../public/login.php");
+exit;
+?>

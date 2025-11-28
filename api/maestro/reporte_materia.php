@@ -1,7 +1,7 @@
 <?php
-require_once "../../src/Database.php";
-require_once "../../src/Auth.php";
-require_once "../../src/fpdf/fpdf.php"; 
+require_once "../../app/Config/Database.php";
+require_once "../../app/Helpers/Auth.php";
+require_once "../../app/Libs/fpdf/fpdf.php";
 
 if (!Auth::isLoggedIn() || Auth::rol() !== 'maestro') exit("Acceso denegado");
 
