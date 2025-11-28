@@ -1,7 +1,7 @@
 <?php
 require_once "../src/Auth.php";
 
-// Si ya está logueado, lo mandamos a su zona
+
 if (Auth::isLoggedIn()) {
     $rol = Auth::rol();
     switch ($rol) {
@@ -34,7 +34,6 @@ if (Auth::isLoggedIn()) {
         <div class="auth-card-header">
             <img src="assets/img/logo2.png" alt="Logo" style="width: 150px; margin-bottom: 15px;">
             <span class="auth-tag">
-               
             </span>
             <h1 class="auth-title">Iniciar sesión</h1>
             <p class="auth-subtitle">

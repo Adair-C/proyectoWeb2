@@ -1,14 +1,16 @@
 <?php
-// api/login.php
+
 require_once "../src/Database.php";
 require_once "../src/Auth.php";
 
 header("Content-Type: application/json; charset=utf-8");
 
+
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     echo json_encode(["error" => "Método no permitido"]);
     exit;
 }
+
 
 $data = json_decode(file_get_contents("php://input"), true);
 if (!is_array($data)) {
@@ -19,17 +21,24 @@ if (!is_array($data)) {
 $usernameOrEmail = trim($data["username"] ?? "");
 $password        = trim($data["password"] ?? "");
 
+
 if ($usernameOrEmail === "" || $password === "") {
     echo json_encode(["error" => "Usuario y contraseña son obligatorios"]);
+    exit;
+}
+
+
+if (!preg_match("/^[a-zA-Z0-9ñÑ]+$/", $usernameOrEmail)) {
+    echo json_encode(["error" => "El usuario contiene caracteres no permitidos."]);
     exit;
 }
 
 try {
     $pdo = Database::pdo();
 
-    // Buscar por username O email
+    
     $stmt = $pdo->prepare("
-        SELECT id, username, password, rol, activo
+        SELECT id, username, password, rol, activo, nombre_completo
         FROM usuarios
         WHERE username = ? OR email = ?
         LIMIT 1
@@ -43,7 +52,7 @@ try {
         exit;
     }
 
-    // Cuenta desactivada
+    
     if ((int)$user["activo"] !== 1) {
         echo json_encode([
             "error" => "Tu cuenta está desactivada. Contacta al administrador."
@@ -51,16 +60,16 @@ try {
         exit;
     }
 
-    // Verificar contraseña
+    
     if (!password_verify($password, $user["password"])) {
         echo json_encode(["error" => "Usuario o contraseña incorrectos"]);
         exit;
     }
 
-    // Login correcto: crear sesión
+    
     Auth::login($user);
 
-    // Redirección según rol
+    
     $redirect = "";
     switch ($user["rol"]) {
         case "alumno":
@@ -81,7 +90,8 @@ try {
     ]);
 
 } catch (Exception $e) {
-    // Para producción mejor no mostrar el mensaje interno:
-    // echo json_encode(["error" => "Error en el servidor"]);
-    echo json_encode(["error" => "Error en el servidor: " . $e->getMessage()]);
+    
+    http_response_code(500);
+    echo json_encode(["error" => "Error interno en el servidor."]);
 }
+?>

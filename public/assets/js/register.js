@@ -1,19 +1,18 @@
+//public/assets/js/register.js
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("form-register");
     const feedback = document.getElementById("feedback");
-    
-    // Referencia al campo de usuario para validación en tiempo real
     const usernameInput = document.getElementById("username");
 
     if (!form) return;
 
-    // 1. VALIDACIÓN EN TIEMPO REAL
-    // Elimina caracteres no permitidos mientras el usuario escribe
+    
     usernameInput.addEventListener("input", (e) => {
-        // Solo permite: Letras, Números, @, Punto, Guion bajo y Guion medio
-        const invalidChars = /[^a-zA-Z0-9@._-]/g;
+        
+        const invalidChars = /[^a-zA-Z0-9ñÑ]/g;
         
         if (invalidChars.test(e.target.value)) {
+            
             e.target.value = e.target.value.replace(invalidChars, "");
         }
     });
@@ -24,35 +23,37 @@ document.addEventListener("DOMContentLoaded", () => {
         feedback.textContent = "";
         feedback.className = "feedback";
 
-        // Obtenemos los valores limpios
+        
         const username = usernameInput.value.trim();
         const password = document.getElementById("password").value;
         const password2 = document.getElementById("password2").value;
         const nombre = document.getElementById("nombre").value.trim();
-        const email = document.getElementById("email").value.trim();
+        const email = document.getElementById("email").value.trim(); 
         const rol = document.getElementById("rol").value;
 
-        // 2. VALIDACIÓN DE SEGURIDAD (Doble chequeo)
-        const regexSeguridad = /[^a-zA-Z0-9@._-]/;
-        if (regexSeguridad.test(username)) {
-            feedback.textContent = "El usuario contiene caracteres no permitidos (´, ^, ¬, °, etc).";
-            feedback.classList.add("error");
-            return;
-        }
-
-        // 3. VALIDACIÓN DE CONTRASEÑAS
+        
         if (password !== password2) {
             feedback.textContent = "Las contraseñas no coinciden.";
             feedback.classList.add("error");
             return;
         }
 
+        
+        
+        const regexEstricta = /[^a-zA-Z0-9ñÑ]/;
+        if (regexEstricta.test(username)) {
+            feedback.textContent = "El usuario solo puede contener letras y números.";
+            feedback.classList.add("error");
+            return; 
+        }
+
+        
         const data = {
             username: username,
             password: password,
             password2: password2,
             nombre: nombre,
-            email: email,
+            email: email, 
             rol: rol
         };
 
@@ -80,6 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error(err);
             feedback.textContent = "Error de conexión con el servidor.";
             feedback.classList.add("error");
-        }
-    });
+        }
+    });
 });

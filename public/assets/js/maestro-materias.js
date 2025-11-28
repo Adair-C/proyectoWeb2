@@ -1,10 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
-    loadMaterias(); // <--- AQUÍ SE LLAMA A LA API AL INICIAR
+    loadMaterias(); 
+    validarEntradas();
 });
 
 let isEditing = false;
 
-// --- CARGAR TABLA DESDE API ---
+function validarEntradas() {
+    const inputNombre = document.getElementById('nombre');
+    const inputCodigo = document.getElementById('codigo');
+    const inputGrupo  = document.getElementById('grupo');
+    const inputUnidades = document.getElementById('unidades');
+
+    
+    if(inputNombre) {
+        inputNombre.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, '');
+        });
+    }
+
+    if(inputCodigo) {
+        inputCodigo.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+            this.value = this.value.toUpperCase(); 
+        });
+    }
+
+    
+    if(inputGrupo) {
+        inputGrupo.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+            this.value = this.value.toUpperCase(); 
+        });
+    }
+    if(inputUnidades) {
+        inputUnidades.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+}
+
+
 async function loadMaterias() {
     const tbody = document.getElementById('materias-body');
     tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Cargando materias...</td></tr>';
@@ -23,7 +58,7 @@ async function loadMaterias() {
         data.forEach(m => {
             const row = document.createElement('tr');
             
-            // Convertimos el objeto a string JSON seguro para ponerlo en el atributo data
+           
             const jsonMateria = JSON.stringify(m).replace(/"/g, '&quot;');
 
             row.innerHTML = `
@@ -53,7 +88,7 @@ async function loadMaterias() {
     }
 }
 
-// --- MODAL ---
+
 window.openMateriaModal = function(edit = false, materiaData = null) {
     isEditing = edit;
     const modal = document.getElementById('modal-materia');
@@ -80,7 +115,7 @@ window.closeMateriaModal = function() {
     document.getElementById('modal-materia').style.display = 'none';
 }
 
-// --- GUARDAR ---
+
 window.saveMateria = async function(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -103,13 +138,13 @@ window.saveMateria = async function(e) {
         if(res.ok) {
             setTimeout(() => {
                 closeMateriaModal();
-                loadMaterias(); // Recargar tabla sin recargar página
+                loadMaterias(); 
             }, 1000);
         }
     } catch (err) { console.error(err); }
 }
 
-// --- BORRAR ---
+
 window.deleteMateria = async function(id) {
     if(!confirm("¿Eliminar materia?")) return;
     try {
@@ -118,6 +153,6 @@ window.deleteMateria = async function(id) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id})
         });
-        if(res.ok) loadMaterias(); // Recargar tabla
-    } catch(err) { alert("Error de conexión"); }
+        if(res.ok) loadMaterias(); 
+    } catch(err) { alert("Error de conexión"); }
 }

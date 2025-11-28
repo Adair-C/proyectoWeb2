@@ -9,7 +9,21 @@ $data = json_decode(file_get_contents('php://input'), true);
 $maestroId = Auth::userId();
 $pdo = Database::pdo();
 
-// UPSERT con unidad
+$calificacion = $data['calificacion'];
+
+
+if (!is_numeric($calificacion)) {
+    http_response_code(400);
+    exit(json_encode(["error" => "La calificación debe ser un número."]));
+}
+
+
+if ($calificacion < 0 || $calificacion > 100) {
+    http_response_code(400);
+    exit(json_encode(["error" => "La calificación debe estar entre 0 y 100."]));
+}
+
+
 $sql = "INSERT INTO calificaciones (alumno_id, materia_id, maestro_id, unidad, calificacion) 
         VALUES (?, ?, ?, ?, ?) 
         ON DUPLICATE KEY UPDATE calificacion = VALUES(calificacion), maestro_id = VALUES(maestro_id)";
